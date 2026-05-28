@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>埔心里鄰長觀摩活動</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; background: #f8f9fa; }
+        .bus-layout { background: #e9ecef; padding: 15px; border-radius: 10px; max-width: 400px; margin: auto; }
+        .row-box { display: flex; justify-content: space-between; margin-bottom: 3px; }
+        .seat { width: 70px; height: 35px; border: 1px solid #777; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; background: #fff; margin: 1px; }
+        .door { background: #17a2b8; color: white; }
+        .em-door { background: #dc3545; color: white; }
+        .room-card { border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: white; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+<div class="container mt-3">
+    <h3 class="text-center">埔心里鄰長觀摩活動</h3>
+    <input type="text" id="nameSearch" class="form-control mb-3" placeholder="輸入名字搜尋座位、桌次、房號..." oninput="searchName()">
+    
+    <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#trip">行程</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#bus">車位</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#room">房號與桌次</a></li>
+    </ul>
+
+    <div class="tab-content mt-3">
+        <div id="trip" class="tab-pane fade show active">
+            <h5>5/29(五) 太平山之旅</h5>
+            <a href="https://www.google.com/maps/search/?api=1&query=見晴懷古步道" class="d-block" target="_blank">📍 見晴懷古步道</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=翠峰湖" class="d-block" target="_blank">📍 翠峰湖</a>
+            <h5>5/30(六) 鳳梨屋之旅</h5>
+            <a href="https://www.google.com/maps/search/?api=1&query=九寮溪自然步道" class="d-block" target="_blank">📍 九寮溪步道</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=鳳梨屋水上莊園" class="d-block" target="_blank">📍 鳳梨屋水上莊園</a>
+        </div>
+
+        <div id="bus" class="tab-pane fade">
+            <div class="bus-layout">
+                <div class="row-box"><div class="seat" style="visibility:hidden"></div><div class="seat door">前門</div></div>
+                <div class="row-box"><div class="seat">劉玉田</div><div class="seat">呂燕玉(素)</div><div class="seat"></div><div class="seat"></div></div>
+                <div class="row-box"><div class="seat"></div><div class="seat">盧宜芳</div><div class="seat">盧宜芳</div><div class="seat">游源隆</div></div>
+                <div class="row-box"><div class="seat">李傳培</div><div class="seat">賴矜桂</div><div class="seat">沈原祿</div><div class="seat">沈睿恩</div></div>
+                <div class="row-box"><div class="seat">郭秋雪</div><div class="seat">戴美菊</div><div class="seat">李碧雲</div><div class="seat">郭秀霞</div></div>
+                <div class="row-box"><div class="seat">李玉貴</div><div class="seat">呂學修</div><div class="seat">黃慧俊</div><div class="seat">李政村</div></div>
+                <div class="row-box"><div class="seat">游素月</div><div class="seat">廖又賢</div><div class="seat">走道</div><div class="seat">空間</div></div>
+                <div class="row-box"><div class="seat em-door">安全門</div><div class="seat"></div></div>
+                <div class="row-box"><div class="seat">王文亮</div><div class="seat">鄭淑娟</div><div class="seat"></div><div class="seat"></div></div>
+                <div class="row-box"><div class="seat">游宏鈞</div><div class="seat">黃家羚</div><div class="seat">張舟輕</div><div class="seat">陳正則</div></div>
+                <div class="row-box"><div class="seat">游獲廣</div><div class="seat">詹翠翠</div><div class="seat">張遠福</div><div class="seat">傅新媚</div></div>
+                <div class="row-box"><div class="seat"></div><div class="seat door">後門</div></div>
+                <div class="row-box"><div class="seat">李應章</div><div class="seat">簡松勇</div><div class="seat">李政益</div><div class="seat">王富美</div></div>
+                <div class="row-box"><div class="seat">倪惠英</div><div class="seat">呂雅筑</div><div class="seat">游源和</div><div class="seat">邱明瑞</div></div>
+                <div class="row-box"><div class="seat"></div><div class="seat"></div><div class="seat">沈原祿</div><div class="seat">沈睿恩</div></div>
+                <div class="row-box"><div class="seat">毛瑜琳</div><div class="seat">李鳳玉</div><div class="seat">胡玉蓮</div><div class="seat">蔡美足</div></div>
+            </div>
+        </div>
+
+        <div id="room" class="tab-pane fade"><div class="row" id="roomList"></div></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const db = {
+        "呂燕玉": { bus: "左1排", table: "第三桌", room: "305" }, "劉玉田": { bus: "左1排", table: "第三桌", room: "305" },
+        "盧宜芳": { bus: "第2排", table: "第一桌", room: "103" }, "游源隆": { bus: "右2排", table: "第一桌", room: "103" },
+        "張舟輕": { bus: "右7排", table: "第一桌", room: "111" }, "陳正則": { bus: "右7排", table: "第一桌", room: "111" },
+        "張遠福": { bus: "右8排", table: "第一桌", room: "115" }, "傅新媚": { bus: "右8排", table: "第一桌", room: "115" },
+        "王文亮": { bus: "左7排", table: "第一桌", room: "118" }, "鄭淑娟": { bus: "左7排", table: "第一桌", room: "118" },
+        "李傳培": { bus: "左3排", table: "第二桌", room: "108" }, "賴矜桂": { bus: "左3排", table: "第二桌", room: "108" },
+        "沈原祿": { bus: "右3排", table: "第二桌", room: "110" }, "沈睿恩": { bus: "右3排", table: "第二桌", room: "110" },
+        "李玉貴": { bus: "左5排", table: "第二桌", room: "303" }, "呂學修": { bus: "左5排", table: "第二桌", room: "303" },
+        "黃慧俊": { bus: "右5排", table: "第二桌", room: "109" }, "李政村": { bus: "右5排", table: "第二桌", room: "109" },
+        "李政益": { bus: "右9排", table: "第二桌", room: "101" }, "王富美": { bus: "右9排", table: "第二桌", room: "101" },
+        "郭秋雪": { bus: "左4排", table: "第三桌", room: "116" }, "戴美菊": { bus: "左4排", table: "第三桌", room: "116" },
+        "李碧雲": { bus: "右4排", table: "第三桌", room: "113" }, "郭秀霞": { bus: "右4排", table: "第三桌", room: "113" },
+        "游素月": { bus: "左6排", table: "第三桌", room: "117" }, "廖又賢": { bus: "左6排", table: "第三桌", room: "117" },
+        "李應章": { bus: "左10排", table: "第三桌", room: "102" }, "簡松勇": { bus: "左10排", table: "第一桌", room: "102" },
+        "倪惠英": { bus: "左11排", table: "第三桌", room: "112" }, "呂雅筑": { bus: "左11排", table: "第三桌", room: "112" },
+        "游宏鈞": { bus: "左8排", table: "第四桌", room: "301" }, "黃家羚": { bus: "左8排", table: "第四桌", room: "301" },
+        "游獲廣": { bus: "左9排", table: "第四桌", room: "302" }, "詹翠翠": { bus: "左9排", table: "第四桌", room: "302" },
+        "游源和": { bus: "右10排", table: "第四桌", room: "105" }, "邱明瑞": { bus: "右10排", table: "第四桌", room: "105" },
+        "胡玉蓮": { bus: "右12排", table: "第四桌", room: "106" }, "蔡美足": { bus: "右12排", table: "第四桌", room: "106" },
+        "毛瑜琳": { bus: "左12排", table: "第四桌", room: "107" }, "李鳳玉": { bus: "左12排", table: "第四桌", room: "107" }
+    };
+
+    const roomList = document.getElementById('roomList');
+    for (let name in db) {
+        roomList.innerHTML += `<div class='col-6'><div class='room-card'>房號 ${db[name].room}<br>${name}</div></div>`;
+    }
+
+    function searchName() {
+        let v = document.getElementById("nameSearch").value;
+        if(v.length < 2) return;
+        for(let n in db) {
+            if(n.includes(v)) {
+                alert(n + "\n車位: " + db[n].bus + "\n桌次: " + db[n].table + "\n房號: " + db[n].room);
+                return;
+            }
+        }
+    }
+</script>
+</body>
+</html>
